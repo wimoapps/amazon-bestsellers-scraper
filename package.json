@@ -1,19 +1,35 @@
 {
     "name": "amazon-bestsellers-crawler",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Automatically extract the top selling items across all main categories.",
     "dependencies": {
-        "@types/cheerio": "^0.22.24",
-        "apify": "^0.22.4",
-        "cheerio": "^1.0.0-rc.5"
+        "apify": "^1.2.0",
+        "cheerio": "^1.0.0-rc.9",
+        "currency.js": "^2.0.3",
+        "date-fns": "^2.17.0",
+        "puppeteer": "^9.1.1",
+        "url-parse": "^1.5.1"
     },
     "devDependencies": {
-        "@apify/eslint-config": "0.0.3",
-        "eslint": "^6.8.0"
+        "@apify/eslint-config": "0.1.4",
+        "eslint": "^7.26.0",
+        "eslint-config-prettier": "^7.2.0",
+        "eslint-plugin-jest": "^24.3.6",
+        "eslint-plugin-prettier": "^3.3.1",
+        "jest": "^26.6.3",
+        "prettier": "^2.2.1",
+        "standard-version": "^9.1.1"
     },
     "scripts": {
-        "start": "node src/main.js"
+        "start": "node src/main.js",
+        "lint": "./node_modules/.bin/eslint ./src --ext .js,.jsx",
+        "lint:fix": "./node_modules/.bin/eslint ./src --ext .js,.jsx --fix",
+        "test": "jest",
+        "release": "standard-version",
+        "release:minor": "standard-version --release-as minor",
+        "release:patch": "standard-version --release-as patch",
+        "release:major": "standard-version --release-as major"
     },
-    "author": "mihails@apify.com",
+    "author": "thanhquang1988@gmail.com",
     "license": "Apache Version 2.0, January 2004"
 }
