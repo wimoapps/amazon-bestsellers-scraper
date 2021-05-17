@@ -44,7 +44,6 @@ async function parseItemDetail($, request, requestQueue, getReviews) {
     item.stars = stars;
     item.details = details;
     item.images = [];
-    log.info("item = ", item );
 
     if ($('script:contains("ImageBlockATF")').length !== 0) {
         const scriptText = $('script:contains("ImageBlockATF")').html();
@@ -87,6 +86,7 @@ async function parseItemDetail($, request, requestQueue, getReviews) {
     //         },
     //     }, { forefront: true });
     // }
+    return item;
 }
 
 module.exports = parseItemDetail;

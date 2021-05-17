@@ -62,15 +62,19 @@ Apify.main(async () => {
                 return document.body.outerHTML;
             });
             const $ = cheerio.load(pageHTML);
-            await runCrawler({
-                $,
-                session,
-                request,
-                requestQueue,
-                input,
-                getReviews,
-                env,
-            });
+            try{
+                await runCrawler({
+                    $,
+                    session,
+                    request,
+                    requestQueue,
+                    input,
+                    getReviews,
+                    env,
+                });
+            }catch(err){
+                log.error("CRAW ERROR ", err);
+            }
         },
         handleFailedRequestFunction: async ({ page, request }) => {
             log.info(`Request ${request.url} failed 4 times`);

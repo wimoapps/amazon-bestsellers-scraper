@@ -12,6 +12,9 @@ async function runCrawler(params) {
     const { label } = request.userData;
     // log.info($('#nav-global-location-slot').text())
     const urlOrigin = await getOriginUrl(request);
+
+    log.info(" label = " + label);
+
     if (!label || label === 'page') {
         try {
             const items = await parseItemUrls($, request);
@@ -43,7 +46,8 @@ async function runCrawler(params) {
         // extract info about item and about seller offers
     } else if (label === 'detail') {
         try {
-            await detailParser($, request, requestQueue, getReviews);
+            const item = await detailParser($, request, requestQueue, getReviews);
+            await saveItem('RESULT', request, item, input, env.defaultDatasetId, session);
         } catch (e) {
             log.error('Detail parsing failed', e);
         }
