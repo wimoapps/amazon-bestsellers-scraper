@@ -20,10 +20,10 @@ Apify.main(async () => {
         log.info(categoryUrl.url);
         await requestQueue.addRequest(categoryUrl);
     }
-    // const proxyConfiguration = await Apify.createProxyConfiguration(proxy);
+    const proxyConfiguration = await Apify.createProxyConfiguration(proxy);
     const crawler = new Apify.PuppeteerCrawler({
         requestQueue,
-        // proxyConfiguration,
+        proxyConfiguration,
         launchContext:{
             useChrome: true,
             launchOptions: {
