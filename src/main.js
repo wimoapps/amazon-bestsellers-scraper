@@ -4,6 +4,8 @@ const cheerio = require("cheerio");
 const { log } = Apify.utils;
 const runCrawler = require('./runCrawler');
 
+const { sleep } = Apify.utils;
+
 Apify.main(async () => {
     // const requestQueueForProductDetail = await Apify.openRequestQueue();
     // const requestQueueForProductList = await Apify.openRequestQueue();
