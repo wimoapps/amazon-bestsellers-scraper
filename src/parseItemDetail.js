@@ -4,6 +4,7 @@ const { log } = Apify.utils;
 
 async function parseItemDetail($, request, requestQueue, getReviews) {
     const { sellerUrl, asin, detailUrl, reviewsUrl, delivery } = request.userData;
+    log.info("parseItemDetail")
     const item = {};
     const reviewsConunt = $('#acrCustomerReviewText').length !== 0 ? $('#acrCustomerReviewText').eq(0).text() : null;
     const stars = $('.reviewCountTextLinkedHistogram').length !== 0 ? $('.reviewCountTextLinkedHistogram').attr('title').match(/(\d+\.\d+)|\d+/)[0] : null;
@@ -16,6 +17,8 @@ async function parseItemDetail($, request, requestQueue, getReviews) {
             details[$(this).find('th').text().trim()] = $(this).find('td').text().trim();
         }
     });
+
+    log.info("details = ", details);
 
     // console.log($('#nav-global-location-slot').text().trim());
     if ($('.DElocale table').length !== 0) {
@@ -41,6 +44,8 @@ async function parseItemDetail($, request, requestQueue, getReviews) {
     item.stars = stars;
     item.details = details;
     item.images = [];
+    log.info("item = ", item );
+
     if ($('script:contains("ImageBlockATF")').length !== 0) {
         const scriptText = $('script:contains("ImageBlockATF")').html();
         if (scriptText.indexOf("'colorImages':").length !== 0
@@ -59,29 +64,29 @@ async function parseItemDetail($, request, requestQueue, getReviews) {
             }
         }
     }
-    if (getReviews) {
-        await requestQueue.addRequest({
-            url: reviewsUrl,
-            userData: {
-                asin,
-                detailUrl,
-                sellerUrl,
-                itemDetail: item,
-                label: 'reviews',
-            },
-        }, { forefront: true });
-    } else {
-        await requestQueue.addRequest({
-            url: sellerUrl,
-            userData: {
-                asin,
-                detailUrl,
-                sellerUrl,
-                itemDetail: item,
-                label: 'seller',
-            },
-        }, { forefront: true });
-    }
+    // if (getReviews) {
+    //     await requestQueue.addRequest({
+    //         url: reviewsUrl,
+    //         userData: {
+    //             asin,
+    //             detailUrl,
+    //             sellerUrl,
+    //             itemDetail: item,
+    //             label: 'reviews',
+    //         },
+    //     }, { forefront: true });
+    // } else {
+    //     await requestQueue.addRequest({
+    //         url: sellerUrl,
+    //         userData: {
+    //             asin,
+    //             detailUrl,
+    //             sellerUrl,
+    //             itemDetail: item,
+    //             label: 'seller',
+    //         },
+    //     }, { forefront: true });
+    // }
 }
 
 module.exports = parseItemDetail;

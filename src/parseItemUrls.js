@@ -9,23 +9,18 @@ const { log } = Apify.utils;
 async function extractItemDetails($, request) {
     const originUrl = await getOriginUrl(request);
     const itemUrls = [];
-    const items = $('.s-result-list [data-asin]');
+    const items = $('span.aok-inline-block > a.a-link-normal');
     if (items.length !== 0) {
         items.each(function () {
-            const asin = $(this).attr('data-asin');
-            const sellerUrl = `${originUrl}/gp/offer-listing/${asin}`;
-            const itemUrl = `${originUrl}/dp/${asin}`;
-            const reviewsUrl = `${originUrl}/product-reviews/${asin}`;
-            if (asin) {
+            const url = $(this).attr('href');
+            if(url){
                 itemUrls.push({
-                    url: itemUrl,
-                    asin,
-                    detailUrl: itemUrl,
-                    sellerUrl,
-                    reviewsUrl
+                    url: "https://www.amazon.com/" + url
                 });
             }
         });
+    }else{
+        log.info("items empty !!!")
     }
     return itemUrls;
 }

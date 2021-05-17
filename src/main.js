@@ -17,11 +17,10 @@ Apify.main(async () => {
         getReviews = true;
     }
     for (const categoryUrl of categoryUrls) {
-        console.log(categoryUrl.url);
+        log.info(categoryUrl.url);
         await requestQueue.addRequest(categoryUrl);
     }
     // const proxyConfiguration = await Apify.createProxyConfiguration(proxy);
-
     const crawler = new Apify.PuppeteerCrawler({
         requestQueue,
         // proxyConfiguration,
@@ -30,6 +29,7 @@ Apify.main(async () => {
             launchOptions: {
                 headless: true,
                 slowMo: Apify.isAtHome() ? 100 : undefined,
+                // args: ['--disable-extensions']
             }
         },
         useSessionPool: true,
@@ -45,6 +45,7 @@ Apify.main(async () => {
         handleRequestTimeoutSecs: 60,
         persistCookiesPerSession: true,
         handlePageFunction: async ({ page, request, session }) => {
+            log.info("handlePageFunction starting")
             const {
                 url,
                 userData,

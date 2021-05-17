@@ -12,20 +12,7 @@ async function runCrawler(params) {
     const { label } = request.userData;
     // log.info($('#nav-global-location-slot').text())
     const urlOrigin = await getOriginUrl(request);
-    if (label === 'page') {
-        // solve pagination if on the page, now support two layouts
-        const enqueuePagination = await parsePaginationUrl($, request);
-        if (enqueuePagination !== false) {
-            log.info(`Adding new pagination of search ${enqueuePagination}`);
-            await requestQueue.addRequest({
-                url: enqueuePagination,
-                userData: {
-                    label: 'page',
-                    keyword: request.userData.keyword,
-                },
-            });
-        }
-        // add items to the queue
+    if (!label || label === 'page') {
         try {
             const items = await parseItemUrls($, request);
             for (const item of items) {
@@ -33,7 +20,6 @@ async function runCrawler(params) {
                     url: item.url,
                     userData: {
                         label: 'detail',
-                        keyword: request.userData.keyword,
                         asin: item.asin,
                         detailUrl: item.detailUrl,
                         sellerUrl: item.sellerUrl,
@@ -44,16 +30,14 @@ async function runCrawler(params) {
 
             if (items.length === 0) {
                 await Apify.pushData({
-                    status: 'No items for this keyword.',
+                    status: 'No items for this category.',
                     url: request.url,
-                    keyword: request.userData.keyword,
                 });
             }
         } catch (error) {
             await Apify.pushData({
-                status: 'No items for this keyword.',
-                url: request.url,
-                keyword: request.userData.keyword,
+                status: 'No items for this category.',
+                url: request.url
             });
         }
         // extract info about item and about seller offers
