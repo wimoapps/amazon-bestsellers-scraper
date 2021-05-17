@@ -29,13 +29,13 @@ async function parseItemUrls($, request) {
     const urls = await extractItemDetails($, request);
     const nextPage = await $('li.a-last > a');
     log.info("nextPage = ", nextPage);
-    if (nextPage) {
-        await nextPage.click();
-        await $.waitForNavigation();
-    }
-    const page_2_urls = await extractItemDetails($, request);
+    // if (nextPage) {
+    //     await nextPage.click();
+    //     await $.waitForNavigation();
+    // }
+    // const page_2_urls = await extractItemDetails($, request);
     log.info(`Found ${urls.length} on a site, going to crawl them. URL: ${request.url}`);
-    return [...urls, ...page_2_urls];
+    return urls;// [...urls, ...page_2_urls];
 }
 
 module.exports = { parseItemUrls };
